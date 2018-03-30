@@ -15,6 +15,9 @@ function combiningChar() {
     return String.fromCharCode(code);
 }
 function zalgo(str, options) {
+    if (typeof str !== 'string') {
+        return '';
+    }
     return str.split('').map(function (char) { return "" + char + repeat(combiningChar, 10).join(''); }).join('');
 }
 exports.default = zalgo;
