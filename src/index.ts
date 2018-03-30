@@ -22,6 +22,10 @@ export interface ZalgoOptions {
 }
 
 function zalgo(str: string, options?: ZalgoOptions): string {
+    if (typeof str !== 'string') {
+        return '';
+    }
+
     return str.split('').map(char => `${char}${repeat(combiningChar, 10).join('')}`).join('');
 }
 
