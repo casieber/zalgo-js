@@ -1,0 +1,23 @@
+{
+  "name": "zalgo-js",
+  "version": "0.1.0",
+  "description": "Utility functions for unleashing Zalgo into strings.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/casieber/zalgo-js.git"
+  },
+  "author": "Colby Sieber <sieber.colby@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/casieber/zalgo-js/issues"
+  },
+  "homepage": "https://github.com/casieber/zalgo-js#readme",
+  "devDependencies": {
+    "typescript": "^2.8.1"
+  }
+}
