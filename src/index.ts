@@ -8,6 +8,11 @@ const down = [790, 791, 792, 793, 796, 797, 798, 799, 800, 801, 802, 803, 804, 8
  */
 const randInt = (upperBound: number) => Math.floor(Math.random() * upperBound);
 
+/**
+ * Calls a function multiple times
+ * @param fn The function to repeat
+ * @param count The number of times to repeat
+ */
 const repeat = <T>(fn: () => T, count: number) => {
     const result: T[] = [];
     for (let i = 0; i < count; i++) {
@@ -16,6 +21,11 @@ const repeat = <T>(fn: () => T, count: number) => {
     return result;
 }
 
+/**
+ * Accepts a list of character codes and returns a function that when
+ * called returns a random character from the original list of character codes.
+ * @param codes The list of character codes to choose from
+ */
 function combiningChars(codes: number[]): () => string {
     return () => String.fromCharCode(codes[randInt(codes.length)]);
 }
@@ -28,6 +38,11 @@ export interface ZalgoOptions {
     }
 }
 
+/**
+ * Releases Zalgo into a string.
+ * @param str The string to unleash Him upon
+ * @param options Options for The Summoning
+ */
 function zalgo(str: string, options?: ZalgoOptions): string {
     if (typeof str !== 'string') {
         return '';
