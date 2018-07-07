@@ -8,9 +8,9 @@ Utility for unleashing Zalgo into your strings.
 ## How To Use
 
 ```javascript
-import zalgo from 'zalgo-js';
+import zalgo from "zalgo-js";
 
-const myString = 'Hello World!';
+const myString = "Hello World!";
 const releaseHim = zalgo(myString);
 
 console.log(releaseHim);
@@ -19,9 +19,9 @@ console.log(releaseHim);
 ## Planned Features
 
 - [ ] Customizable levels of Zalgo-ness
-    - [x] Specify accepted directions
-    - [ ] Specify overall intensity
-    - [ ] Specify function used to determine per-character intensity
-    - [ ] Specify set of a accepted combining characters (???)
-    - [ ] Specify overall min-max frequency of combining characters
+  - [x] Specify accepted directions
+  - [x] Specify overall intensity
+  - [ ] Specify function used to determine per-character intensity
+  - [ ] Specify set of a accepted combining characters (???)
+  - [ ] Specify overall min-max frequency of combining characters
 - [ ] Seeded version to allow for more deterministic Zalgo
