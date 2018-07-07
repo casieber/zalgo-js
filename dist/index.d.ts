@@ -2,6 +2,9 @@
  * Options object for for a custom summoning.
  */
 export interface ZalgoOptions {
+    /**
+     * Allowed directions of symbols.
+     */
     directions?: {
         up?: boolean;
         down?: boolean;
@@ -13,9 +16,16 @@ export interface ZalgoOptions {
     intensity?: number;
 }
 /**
+ * Summons Zalgo with optional customizations.
+ * @param {ZalgoOptions} [options] - Options for The Summoning
+ * @returns {(str: string) => string} - A custom summoned Zalgo, ready to defile strings.
+ */
+export declare function summon(options?: ZalgoOptions): (str: string) => string;
+/**
  * Releases Zalgo into a string.
- * @param str The string to unleash Him upon
- * @param options Options for The Summoning
+ * @param {string} str - The string to unleash Him upon
+ * @param {ZalgoOptions} [options] - Options for The Summoning
+ * @returns {string} The Zalgo'd string
  */
 declare function zalgo(str: string, options?: ZalgoOptions): string;
 export default zalgo;
