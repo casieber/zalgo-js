@@ -13,8 +13,8 @@ const randInt = (upperBound: number) => Math.floor(Math.random() * upperBound);
 
 /**
  * Calls a function multiple times
- * @param fn The function to repeat
- * @param count The number of times to repeat
+ * @param {() => T} fn - The function to repeat
+ * @param {number} count - The number of times to repeat
  */
 const repeat = <T>(fn: () => T, count: number) => {
     const result: T[] = [];
@@ -25,9 +25,9 @@ const repeat = <T>(fn: () => T, count: number) => {
 }
 
 /**
- * Accepts a list of character codes and returns a function that when
- * called returns a random character from the original list of character codes.
- * @param codes The list of character codes to choose from
+ * Generates a random character picker from a list of character codes.
+ * @param {number[]} codes - The list of character codes to choose from
+ * @returns {() => string} A function that returns a random character
  */
 function combiningChars(codes: number[]): () => string {
     return () => String.fromCharCode(codes[randInt(codes.length)]);
@@ -54,8 +54,8 @@ export interface ZalgoOptions {
 
 /**
  * Summons Zalgo with optional customizations.
- * @param options Options for The Summoning
- * @returns A custom summoned Zalgo, ready to defile strings.
+ * @param {ZalgoOptions} [options] - Options for The Summoning
+ * @returns {(str: string) => string} - A custom summoned Zalgo, ready to defile strings.
  */
 export function summon(options?: ZalgoOptions): (str: string) => string {
     const possibleChars = ([] as number[]).concat(
@@ -80,9 +80,9 @@ export function summon(options?: ZalgoOptions): (str: string) => string {
 
 /**
  * Releases Zalgo into a string.
- * @param str The string to unleash Him upon
- * @param options Options for The Summoning
- * @returns The Zalgo'd string
+ * @param {string} str - The string to unleash Him upon
+ * @param {ZalgoOptions} [options] - Options for The Summoning
+ * @returns {string} The Zalgo'd string
  */
 function zalgo(str: string, options?: ZalgoOptions): string {
     return summon(options)(str);
