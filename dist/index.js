@@ -8,6 +8,11 @@ var down = [790, 791, 792, 793, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805
  * upper bound (exclusive).
  */
 var randInt = function (upperBound) { return Math.floor(Math.random() * upperBound); };
+/**
+ * Calls a function multiple times
+ * @param fn The function to repeat
+ * @param count The number of times to repeat
+ */
 var repeat = function (fn, count) {
     var result = [];
     for (var i = 0; i < count; i++) {
@@ -15,15 +20,26 @@ var repeat = function (fn, count) {
     }
     return result;
 };
+/**
+ * Accepts a list of character codes and returns a function that when
+ * called returns a random character from the original list of character codes.
+ * @param codes The list of character codes to choose from
+ */
 function combiningChars(codes) {
     return function () { return String.fromCharCode(codes[randInt(codes.length)]); };
 }
+/**
+ * Releases Zalgo into a string.
+ * @param str The string to unleash Him upon
+ * @param options Options for The Summoning
+ */
 function zalgo(str, options) {
     if (typeof str !== 'string') {
         return '';
     }
-    var possibleChars = [].concat(options && options.directions && options.directions.up === false ? [] : up).concat(options && options.directions && options.directions.middle === false ? [] : middle).concat(options && options.directions && options.directions.down === false ? [] : down);
+    var possibleChars = [].concat(options && options.directions && options.directions.hasOwnProperty('up') && !options.directions.up ? [] : up).concat(options && options.directions && options.directions.hasOwnProperty('middle') && !options.directions.middle ? [] : middle).concat(options && options.directions && options.directions.hasOwnProperty('down') && !options.directions.down ? [] : down);
     var randomCombiningChar = combiningChars(possibleChars);
-    return str.split('').map(function (char) { return "" + char + repeat(randomCombiningChar, 10).join(''); }).join('');
+    var n = 20 * (options && typeof options.intensity === 'number' ? options.intensity : 0.5);
+    return str.split('').map(function (char) { return "" + char + repeat(randomCombiningChar, n).join(''); }).join('');
 }
 exports.default = zalgo;

@@ -30,12 +30,20 @@ function combiningChars(codes: number[]): () => string {
     return () => String.fromCharCode(codes[randInt(codes.length)]);
 }
 
+/**
+ * Options object for for a custom summoning.
+ */
 export interface ZalgoOptions {
     directions?: {
         up?: boolean;
         down?: boolean;
         middle?: boolean;
     }
+
+    /**
+     * Overall intensity. Expects a number between 0 and 1. Defaults to 0.5
+     */
+    intensity?: number;
 }
 
 /**
@@ -57,8 +65,9 @@ function zalgo(str: string, options?: ZalgoOptions): string {
     );
 
     const randomCombiningChar = combiningChars(possibleChars);
+    const n = 20 * (options && typeof options.intensity === 'number' ? options.intensity : 0.5);
 
-    return str.split('').map(char => `${char}${repeat(randomCombiningChar, 10).join('')}`).join('');
+    return str.split('').map(char => `${char}${repeat(randomCombiningChar, n).join('')}`).join('');
 }
 
 export default zalgo;
