@@ -69,7 +69,13 @@ export function summon(options?: ZalgoOptions): (str: string) => string {
     const randomCombiningChar = combiningChars(possibleChars);
     const n = 20 * (options && typeof options.intensity === 'number' ? options.intensity : 0.5);
 
-    return (str: string) => str.split('').map(char => `${char}${repeat(randomCombiningChar, n).join('')}`).join('');
+    return (str: string) => {
+        if (typeof str !== 'string') {
+            return '';
+        }
+
+        return str.split('').map(char => `${char}${repeat(randomCombiningChar, n).join('')}`).join('');
+    }
 }
 
 /**
