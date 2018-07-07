@@ -53,16 +53,11 @@ export interface ZalgoOptions {
 }
 
 /**
- * Releases Zalgo into a string.
- * @param str The string to unleash Him upon
+ * Summons Zalgo with optional customizations.
  * @param options Options for The Summoning
- * @returns The Zalgo'd string
+ * @returns A custom summoned Zalgo, ready to defile strings.
  */
-function zalgo(str: string, options?: ZalgoOptions): string {
-    if (typeof str !== 'string') {
-        return '';
-    }
-
+export function summon(options?: ZalgoOptions): (str: string) => string {
     const possibleChars = ([] as number[]).concat(
         options && options.directions && options.directions.hasOwnProperty('up') && !options.directions.up ? [] : up
     ).concat(
@@ -74,7 +69,17 @@ function zalgo(str: string, options?: ZalgoOptions): string {
     const randomCombiningChar = combiningChars(possibleChars);
     const n = 20 * (options && typeof options.intensity === 'number' ? options.intensity : 0.5);
 
-    return str.split('').map(char => `${char}${repeat(randomCombiningChar, n).join('')}`).join('');
+    return (str: string) => str.split('').map(char => `${char}${repeat(randomCombiningChar, n).join('')}`).join('');
+}
+
+/**
+ * Releases Zalgo into a string.
+ * @param str The string to unleash Him upon
+ * @param options Options for The Summoning
+ * @returns The Zalgo'd string
+ */
+function zalgo(str: string, options?: ZalgoOptions): string {
+    return summon(options)(str);
 }
 
 export default zalgo;
