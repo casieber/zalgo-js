@@ -25,3 +25,4 @@ console.log(releaseHim);
   - [ ] Specify set of a accepted combining characters (???)
   - [ ] Specify overall min-max frequency of combining characters
 - [ ] Seeded version to allow for more deterministic Zalgo
+- [ ] Export curried version to accept options first and output custom summoning
