@@ -14,6 +14,10 @@ export interface ZalgoOptions {
      * Overall intensity. Expects a number between 0 and 1. Defaults to 0.5
      */
     intensity?: number;
+    /**
+     * A seed for the internal RNG
+     */
+    seed?: string;
 }
 /**
  * Summons Zalgo with optional customizations.

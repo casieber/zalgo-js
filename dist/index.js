@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var seedrandom = require("seedrandom");
 /**
  * Character codes of summoning symbols
  */
@@ -10,7 +11,7 @@ var down = [790, 791, 792, 793, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805
  * Generates a random integer between 0 (inclusive) and the provided
  * upper bound (exclusive).
  */
-var randInt = function (upperBound) { return Math.floor(Math.random() * upperBound); };
+var randInt = function (random) { return function (upperBound) { return Math.floor(random() * upperBound); }; };
 /**
  * Calls a function multiple times
  * @param {() => T} fn - The function to repeat
@@ -28,8 +29,8 @@ var repeat = function (fn, count) {
  * @param {number[]} codes - The list of character codes to choose from
  * @returns {() => string} A function that returns a random character
  */
-function combiningChars(codes) {
-    return function () { return String.fromCharCode(codes[randInt(codes.length)]); };
+function combiningChars(random, codes) {
+    return function () { return String.fromCharCode(codes[randInt(random)(codes.length)]); };
 }
 /**
  * Summons Zalgo with optional customizations.
@@ -38,7 +39,8 @@ function combiningChars(codes) {
  */
 function summon(options) {
     var possibleChars = [].concat(options && options.directions && options.directions.hasOwnProperty('up') && !options.directions.up ? [] : up).concat(options && options.directions && options.directions.hasOwnProperty('middle') && !options.directions.middle ? [] : middle).concat(options && options.directions && options.directions.hasOwnProperty('down') && !options.directions.down ? [] : down);
-    var randomCombiningChar = combiningChars(possibleChars);
+    var random = options && options.seed ? seedrandom(options.seed) : Math.random;
+    var randomCombiningChar = combiningChars(random, possibleChars);
     var n = 20 * (options && typeof options.intensity === 'number' ? options.intensity : 0.5);
     return function (str) {
         if (typeof str !== 'string') {
