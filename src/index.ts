@@ -28,6 +28,7 @@ const repeat = <T>(fn: () => T, count: number) => {
 
 /**
  * Generates a random character picker from a list of character codes.
+ * @param {() => number} random - The RNG to use
  * @param {number[]} codes - The list of character codes to choose from
  * @returns {() => string} A function that returns a random character
  */
