@@ -18,11 +18,10 @@ console.log(releaseHim);
 
 ## Planned Features
 
-- [ ] Customizable levels of Zalgo-ness
+- [x] Customizable levels of Zalgo-ness
   - [x] Specify accepted directions
   - [x] Specify overall intensity
-  - [ ] Specify function used to determine per-character intensity
+  - [x] Specify function used to determine per-character intensity
   - [x] Specify set of a accepted combining characters
-  - [ ] Specify overall min-max frequency of combining characters
 - [x] Seeded version to allow for more deterministic Zalgo
 - [x] Export curried version to accept options first and output custom summoning

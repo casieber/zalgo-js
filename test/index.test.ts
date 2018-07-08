@@ -2,8 +2,10 @@ import zalgo, { summon } from '../src';
 
 const msg = 'Hello, World!';
 
+const isString = str => expect(typeof str).toBe('string');
+
 test('returns a string', () => {
-    expect(typeof zalgo('Hello')).toBe('string');
+    isString(zalgo('Hello'));
 });
 
 test('returns empty string on bad input', () => {
@@ -47,4 +49,37 @@ test('providing custom character set only outputs provided characters', () => {
 
     expect(aCount).toBe(input.length); // Expect 5 'a's
     expect(result.length).toBe(aCount + bCount); // Expect only 'a's and 'b's
+});
+
+test('providing custom numeric intensity', () => {
+    isString(zalgo(msg, { intensity: 0.6 }));
+    isString(zalgo(msg, { intensity: 0 }));
+    isString(zalgo(msg, { intensity: 1 }));
+
+    // Zero intensity shouldn't affect input
+    expect(zalgo(msg, { intensity: 0}).length).toBe(msg.length);
+
+    expect(zalgo(msg, { intensity: 0.6}).length).toBeGreaterThan(msg.length);
+    expect(zalgo(msg, { intensity: 1 }).length).toBeGreaterThan(msg.length);
+});
+
+test('providing custom functional intensity', () => {
+    isString(zalgo(msg, { intensity: () => .6 }));
+    isString(zalgo(msg, { intensity: () => 0 }));
+    isString(zalgo(msg, { intensity: () => 1 }));
+
+    // Zero intensity shouldn't affect input
+    expect(zalgo(msg, { intensity: () => 0 }).length).toBe(msg.length);
+
+    expect(zalgo(msg, { intensity: () => 0.6 }).length).toBeGreaterThan(msg.length);
+    expect(zalgo(msg, { intensity: () => 1 }).length).toBeGreaterThan(msg.length);
+
+    // Ensure per-character intensity assigns different intensities
+    const customMsg = 'ab';
+    const intensity = (str: string, i: number) => i;
+
+    const result = zalgo(customMsg, { intensity });
+    expect(result[0]).toBe('a');
+    expect(result[1]).toBe('b');
+    expect(result.length).toBeGreaterThan(customMsg.length);
 });

@@ -50,9 +50,13 @@ export interface ZalgoOptions {
     }
 
     /**
-     * Overall intensity. Expects a number between 0 and 1. Defaults to 0.5
+     * Summoning intensity. Expects either:
+     *   - a number between 0 and 1.
+     *   - a function that will be called per input character and returns a number between 0 and 1.
+     * 
+     * Defaults to 0.5
      */
-    intensity?: number;
+    intensity?: number | ((value: string, i: number) => number);
 
     /**
      * A seed for the internal RNG
@@ -89,14 +93,24 @@ export function summon(options?: ZalgoOptions): (str: string) => string {
     const random = options && options.seed ? seedrandom(options.seed) : Math.random;
 
     const randomCombiningChar = combiningChars(random, possibleChars);
-    const n = 20 * (options && typeof options.intensity === 'number' ? options.intensity : 0.5);
+    const n = (char: string, i: number) => {
+        const max = 20;
+
+        if (options && typeof options.intensity === 'function') {
+            return max * options.intensity(char, i);
+        } else if (options && typeof options.intensity === 'number') {
+            return max * options.intensity;
+        } else {
+            return 0.5; // Default intensity
+        }
+    }
 
     return (str: string) => {
         if (typeof str !== 'string') {
             return '';
         }
 
-        return str.split('').map(char => `${char}${repeat(randomCombiningChar, n).join('')}`).join('');
+        return str.split('').map((char: string, i: number) => `${char}${repeat(randomCombiningChar, n(char, i)).join('')}`).join('');
     }
 }
 
