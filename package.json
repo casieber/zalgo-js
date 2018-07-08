@@ -1,6 +1,6 @@
 {
   "name": "zalgo-js",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "Utility functions for unleashing Zalgo into strings.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
