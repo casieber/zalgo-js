@@ -1,4 +1,4 @@
-import zalgo from '../src';
+import zalgo, { summon } from '../src';
 
 test('returns a string', () => {
     expect(typeof zalgo('Hello')).toBe('string');
@@ -12,7 +12,7 @@ test('returns empty string on bad input', () => {
     expect(z({})).toBe('');
 });
 
-test('Still keeps original message intact', () => {
+test('keeps original message intact in the output', () => {
     const msg = 'Hello World!';
 
     const result = zalgo(msg);
@@ -22,4 +22,16 @@ test('Still keeps original message intact', () => {
     result.split('').forEach(char => char === msg[searchIndex] ? searchIndex++ : null);
 
     expect(searchIndex).toBe(msg.length);
+});
+
+test('seeding produces consistent ouputs', () => {
+    const options = { seed: 'This is my seed' };
+    const msg = 'Hello, world!';
+
+    const zalgo1 = summon(options);
+    const zalgo2 = summon(options);
+
+    for (let i = 0; i < 10; i++) {
+        expect(zalgo1(msg)).toBe(zalgo2(msg));
+    }
 });
