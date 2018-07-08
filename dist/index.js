@@ -26,6 +26,7 @@ var repeat = function (fn, count) {
 };
 /**
  * Generates a random character picker from a list of character codes.
+ * @param {() => number} random - The RNG to use
  * @param {number[]} codes - The list of character codes to choose from
  * @returns {() => string} A function that returns a random character
  */
@@ -38,15 +39,33 @@ function combiningChars(random, codes) {
  * @returns {(str: string) => string} - A custom summoned Zalgo, ready to defile strings.
  */
 function summon(options) {
-    var possibleChars = [].concat(options && options.directions && options.directions.hasOwnProperty('up') && !options.directions.up ? [] : up).concat(options && options.directions && options.directions.hasOwnProperty('middle') && !options.directions.middle ? [] : middle).concat(options && options.directions && options.directions.hasOwnProperty('down') && !options.directions.down ? [] : down);
+    var possibleChars;
+    if (options && options.characters && Array.isArray(options.characters)) {
+        // Use custom character set
+        possibleChars = options.characters;
+    }
+    else {
+        possibleChars = [].concat(options && options.directions && options.directions.hasOwnProperty('up') && !options.directions.up ? [] : up).concat(options && options.directions && options.directions.hasOwnProperty('middle') && !options.directions.middle ? [] : middle).concat(options && options.directions && options.directions.hasOwnProperty('down') && !options.directions.down ? [] : down);
+    }
     var random = options && options.seed ? seedrandom(options.seed) : Math.random;
     var randomCombiningChar = combiningChars(random, possibleChars);
-    var n = 20 * (options && typeof options.intensity === 'number' ? options.intensity : 0.5);
+    var n = function (char, i) {
+        var max = 20;
+        if (options && typeof options.intensity === 'function') {
+            return max * options.intensity(char, i);
+        }
+        else if (options && typeof options.intensity === 'number') {
+            return max * options.intensity;
+        }
+        else {
+            return 0.5; // Default intensity
+        }
+    };
     return function (str) {
         if (typeof str !== 'string') {
             return '';
         }
-        return str.split('').map(function (char) { return "" + char + repeat(randomCombiningChar, n).join(''); }).join('');
+        return str.split('').map(function (char, i) { return "" + char + repeat(randomCombiningChar, n(char, i)).join(''); }).join('');
     };
 }
 exports.summon = summon;
