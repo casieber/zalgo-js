@@ -1,3 +1,5 @@
+import * as seedrandom from 'seedrandom';
+
 /**
  * Character codes of summoning symbols
  */
@@ -9,7 +11,7 @@ const down = [790, 791, 792, 793, 796, 797, 798, 799, 800, 801, 802, 803, 804, 8
  * Generates a random integer between 0 (inclusive) and the provided
  * upper bound (exclusive).
  */
-const randInt = (upperBound: number) => Math.floor(Math.random() * upperBound);
+const randInt = (random: () => number) => (upperBound: number) => Math.floor(random() * upperBound);
 
 /**
  * Calls a function multiple times
@@ -29,8 +31,8 @@ const repeat = <T>(fn: () => T, count: number) => {
  * @param {number[]} codes - The list of character codes to choose from
  * @returns {() => string} A function that returns a random character
  */
-function combiningChars(codes: number[]): () => string {
-    return () => String.fromCharCode(codes[randInt(codes.length)]);
+function combiningChars(random: () => number, codes: number[]): () => string {
+    return () => String.fromCharCode(codes[randInt(random)(codes.length)]);
 }
 
 /**
@@ -50,6 +52,11 @@ export interface ZalgoOptions {
      * Overall intensity. Expects a number between 0 and 1. Defaults to 0.5
      */
     intensity?: number;
+
+    /**
+     * A seed for the internal RNG
+     */
+    seed?: string;
 }
 
 /**
@@ -66,7 +73,9 @@ export function summon(options?: ZalgoOptions): (str: string) => string {
         options && options.directions && options.directions.hasOwnProperty('down') && !options.directions.down ? [] : down
     );
 
-    const randomCombiningChar = combiningChars(possibleChars);
+    const random = options && options.seed ? seedrandom(options.seed) : Math.random;
+
+    const randomCombiningChar = combiningChars(random, possibleChars);
     const n = 20 * (options && typeof options.intensity === 'number' ? options.intensity : 0.5);
 
     return (str: string) => {
