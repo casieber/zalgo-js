@@ -22,7 +22,7 @@ console.log(releaseHim);
   - [x] Specify accepted directions
   - [x] Specify overall intensity
   - [ ] Specify function used to determine per-character intensity
-  - [ ] Specify set of a accepted combining characters (???)
+  - [x] Specify set of a accepted combining characters
   - [ ] Specify overall min-max frequency of combining characters
 - [x] Seeded version to allow for more deterministic Zalgo
 - [x] Export curried version to accept options first and output custom summoning

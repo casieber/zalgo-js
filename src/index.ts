@@ -57,6 +57,11 @@ export interface ZalgoOptions {
      * A seed for the internal RNG
      */
     seed?: string;
+
+    /**
+     * Array of character codes representing a custom character set.
+     */
+    characters?: number[];
 }
 
 /**
@@ -65,13 +70,20 @@ export interface ZalgoOptions {
  * @returns {(str: string) => string} - A custom summoned Zalgo, ready to defile strings.
  */
 export function summon(options?: ZalgoOptions): (str: string) => string {
-    const possibleChars = ([] as number[]).concat(
-        options && options.directions && options.directions.hasOwnProperty('up') && !options.directions.up ? [] : up
-    ).concat(
-        options && options.directions && options.directions.hasOwnProperty('middle') && !options.directions.middle ? [] : middle
-    ).concat(
-        options && options.directions && options.directions.hasOwnProperty('down') && !options.directions.down ? [] : down
-    );
+    let possibleChars: number[];
+
+    if (options && options.characters && Array.isArray(options.characters)) {
+        // Use custom character set
+        possibleChars = options.characters;
+    } else {
+        possibleChars = ([] as number[]).concat(
+            options && options.directions && options.directions.hasOwnProperty('up') && !options.directions.up ? [] : up
+        ).concat(
+            options && options.directions && options.directions.hasOwnProperty('middle') && !options.directions.middle ? [] : middle
+        ).concat(
+            options && options.directions && options.directions.hasOwnProperty('down') && !options.directions.down ? [] : down
+        );
+    }
 
     const random = options && options.seed ? seedrandom(options.seed) : Math.random;
 
